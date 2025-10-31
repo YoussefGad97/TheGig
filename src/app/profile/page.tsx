@@ -24,21 +24,29 @@ export default function Profile() {
   }, [router]);
 
   if (!user) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-[var(--background)] text-[var(--foreground)]">
+        <p className="text-xl">Loading...</p>
+      </div>
+    );
   }
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold">Profile</h1>
-      <p>
-        <strong>Username:</strong> {user.username}
-      </p>
-      <p>
-        <strong>Email:</strong> {user.email}
-      </p>
-      <p>
-        <strong>Instrument:</strong> {user.instrument}
-      </p>
+    <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)] p-8">
+      <div className="max-w-2xl mx-auto bg-[var(--card-background)] p-8 rounded-lg shadow-xl border-[var(--border-color)]">
+        <h1 className="text-3xl font-bold mb-6 text-[var(--primary)] text-center">User Profile</h1>
+        <div className="space-y-4">
+          <p className="text-lg">
+            <strong className="font-semibold text-[var(--accent)]">Username:</strong> {user.username}
+          </p>
+          <p className="text-lg">
+            <strong className="font-semibold text-[var(--accent)]">Email:</strong> {user.email}
+          </p>
+          <p className="text-lg">
+            <strong className="font-semibold text-[var(--accent)]">Instrument:</strong> {user.instrument}
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

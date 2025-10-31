@@ -1,34 +1,39 @@
+"use client";
+
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { AnimatePresence, motion } from "framer-motion";
+import { usePathname } from "next/navigation";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+const inter = Inter({ subsets: ["latin"] });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-export const metadata: Metadata = {
-  title: "The Gig",
-  description: "A Social Media Platform for Musicians",
-};
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const pathname = usePathname();
+
   return (
     <html lang="en">
-      <body className="bg-black" suppressHydrationWarning={true}>
+      <body className={inter.className + " bg-black"} suppressHydrationWarning={true}>
         <Header />
-        <main className="container mx-auto p-4">{children}</main>
+        <AnimatePresence mode="wait">
+          <motion.main
+            key={pathname}
+            className="container mx-auto p-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            {children}
+          </motion.main>
+        </AnimatePresence>
         <Footer />
       </body>
     </html>

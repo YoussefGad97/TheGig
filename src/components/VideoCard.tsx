@@ -6,11 +6,11 @@ interface VideoCardProps {
 
 const VideoCard: React.FC<VideoCardProps> = ({ title, thumbnailUrl, author }) => {
   return (
-    <div className="border border-gray-700 rounded-lg overflow-hidden shadow-lg bg-gray-800">
-      <div className="w-full h-48 bg-gray-700" />
+    <div className="border-[var(--border-color)] rounded-lg overflow-hidden shadow-lg bg-[var(--card-background)] hover:shadow-xl hover:scale-[1.02] transition-all duration-300 ease-in-out cursor-pointer">
+      <img src={thumbnailUrl} alt={title} className="w-full h-48 object-cover" />
       <div className="p-4">
-        <h3 className="font-bold text-lg text-white">{title}</h3>
-        <p className="text-gray-400">{author}</p>
+        <h3 className="font-bold text-lg text-[var(--foreground)]">{title}</h3>
+        <p className="text-[var(--accent)] text-sm">{author}</p>
       </div>
     </div>
   );
