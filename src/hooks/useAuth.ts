@@ -8,9 +8,21 @@ const useAuth = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    setIsAuthenticated(!!token);
-  }, []);
+    const checkAuth = () => {
+      const token = localStorage.getItem('token');
+      setIsAuthenticated(!!token);
+    };
+
+    checkAuth(); // Check auth status on mount
+
+    // Listen for changes in localStorage across tabs/windows
+    window.addEventListener('storage', checkAuth);
+
+    // Clean up the event listener
+    return () => {
+      window.removeEventListener('storage', checkAuth);
+    };
+  }, []); // Empty dependency array to run only once on mount and setup listener
 
   const login = (token: string) => {
     localStorage.setItem('token', token);

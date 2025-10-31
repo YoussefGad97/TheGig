@@ -30,7 +30,7 @@ export default function Register() {
 
   const handleCloseSuccessMessage = () => {
     setShowSuccessMessage(false);
-    router.push('/profile'); // Redirect to profile page after closing message
+    router.push('/'); // Redirect to home page after closing message
   };
 
   return (
