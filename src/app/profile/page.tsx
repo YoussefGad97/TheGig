@@ -14,12 +14,16 @@ export default function Profile() {
       return;
     }
 
-    // In a real application, you would fetch the user's data from the server
-    // using the token. For now, we'll just use a placeholder.
-    setUser({
-      username: 'Test User',
-      email: 'test@example.com',
-      instrument: 'Guitar',
+    // Simulate fetching user data from a local source for testing purposes
+    console.log('Simulating local user data fetch with token:', token);
+
+    // Simulate API call delay
+    new Promise((resolve) => setTimeout(resolve, 500)).then(() => {
+      setUser({
+        username: 'Local Test User',
+        email: 'local.test@example.com',
+        instrument: 'Drums',
+      });
     });
   }, [router]);
 

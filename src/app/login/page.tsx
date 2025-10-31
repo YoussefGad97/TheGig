@@ -2,32 +2,38 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import useAuth from '@/hooks/useAuth';
+import SuccessMessage from '@/components/SuccessMessage';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const router = useRouter();
+  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const res = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-    });
+    // Simulate a local login for testing purposes
+    console.log('Local Login Attempt:', { email, password });
 
-    if (res.ok) {
-      const { token } = await res.json();
-      localStorage.setItem('token', token);
-      router.push('/profile');
-    }
+    // Simulate API call delay
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    // Simulate successful login
+    const dummyToken = 'dummy-jwt-token-for-testing';
+    login(dummyToken); // Use the login function from useAuth
+    setShowSuccessMessage(true); // Show success message
+  };
+
+  const handleCloseSuccessMessage = () => {
+    setShowSuccessMessage(false);
+    router.push('/profile'); // Redirect to profile page after closing message
   };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-[var(--background)] text-[var(--foreground)]">
-      <form onSubmit={handleSubmit} className="bg-[var(--card-background)] p-8 rounded-lg shadow-xl w-96 border-[var(--border-color)]">
+      <form onSubmit={handleSubmit} className="bg-[var(--card-background)] p-8 rounded-lg shadow-xl w-full max-w-md md:max-w-lg lg:max-w-xl border-[var(--border-color)]">
         <h1 className="text-3xl font-bold mb-6 text-[var(--primary)] text-center">Login</h1>
         <div className="mb-4">
           <label className="block text-sm font-medium mb-1">Email</label>
@@ -53,6 +59,14 @@ export default function Login() {
           Login
         </button>
       </form>
+
+      {showSuccessMessage && (
+        <SuccessMessage
+          message="You have successfully logged in!"
+          onClose={handleCloseSuccessMessage}
+          redirectPath="/profile"
+        />
+      )}
     </div>
   );
 }

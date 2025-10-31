@@ -26,10 +26,11 @@ export default function RootLayout({
           <motion.main
             key={pathname}
             className="container mx-auto p-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 1.05 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            style={{ position: 'relative', width: '100%', overflowX: 'hidden', height: '100%' }}
           >
             {children}
           </motion.main>

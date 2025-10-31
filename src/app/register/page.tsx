@@ -2,32 +2,40 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import useAuth from '@/hooks/useAuth';
+import SuccessMessage from '@/components/SuccessMessage';
 
 export default function Register() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [instrument, setInstrument] = useState('');
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const router = useRouter();
+  const { login } = useAuth(); // Assuming successful registration also logs the user in
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const res = await fetch('/api/auth/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, email, password, instrument }),
-    });
+    // Simulate a local registration for testing purposes
+    console.log('Local Register Attempt:', { username, email, password, instrument });
 
-    if (res.ok) {
-      router.push('/login');
-    }
+    // Simulate API call delay
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    // Simulate successful registration and login
+    const dummyToken = 'dummy-jwt-token-for-testing'; // In a real app, this would come from the API
+    login(dummyToken); // Log in the user after registration
+    setShowSuccessMessage(true); // Show success message
+  };
+
+  const handleCloseSuccessMessage = () => {
+    setShowSuccessMessage(false);
+    router.push('/profile'); // Redirect to profile page after closing message
   };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-[var(--background)] text-[var(--foreground)]">
-      <form onSubmit={handleSubmit} className="bg-[var(--card-background)] p-8 rounded-lg shadow-xl w-96 border-[var(--border-color)]">
+      <form onSubmit={handleSubmit} className="bg-[var(--card-background)] p-8 rounded-lg shadow-xl w-full max-w-md md:max-w-lg lg:max-w-xl border-[var(--border-color)]">
         <h1 className="text-3xl font-bold mb-6 text-[var(--primary)] text-center">Register</h1>
         <div className="mb-4">
           <label className="block text-sm font-medium mb-1">Username</label>
@@ -73,6 +81,14 @@ export default function Register() {
           Register
         </button>
       </form>
+
+      {showSuccessMessage && (
+        <SuccessMessage
+          message="Registration successful! You are now logged in."
+          onClose={handleCloseSuccessMessage}
+          redirectPath="/profile"
+        />
+      )}
     </div>
   );
 }
