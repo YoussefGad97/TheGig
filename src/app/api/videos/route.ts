@@ -24,9 +24,18 @@ let uploadedVideos: any[] = [
 ];
 
 export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const page = parseInt(searchParams.get('page') || '1', 10);
+  const limit = parseInt(searchParams.get('limit') || '5', 10);
+
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+
   // Simulate API delay
   await new Promise(resolve => setTimeout(resolve, 300));
-  return NextResponse.json(uploadedVideos);
+
+  const paginatedVideos = uploadedVideos.slice(startIndex, endIndex);
+  return NextResponse.json(paginatedVideos);
 }
 
 export async function POST(request: Request) {
