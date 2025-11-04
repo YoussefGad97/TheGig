@@ -21,7 +21,6 @@ const MobileNavBar = () => {
   const { isAuthenticated } = useAuth();
   const [activeItem, setActiveItem] = useState('');
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
-  const [humpStyle, setHumpStyle] = useState({});
 
   useEffect(() => {
     const currentItem = navItems.find(item => item.href === pathname);
@@ -29,20 +28,6 @@ const MobileNavBar = () => {
       setActiveItem(currentItem.name);
     }
   }, [pathname]);
-
-  useEffect(() => {
-    const activeIndex = navItems.findIndex(item => item.name === activeItem);
-    if (activeIndex !== -1) {
-      const totalItems = navItems.length + (isAuthenticated ? 1 : 0);
-      const itemWidth = 100 / totalItems;
-      const leftPosition = activeIndex * itemWidth + (itemWidth / 2);
-      setHumpStyle({
-        left: `${leftPosition}%`,
-        transform: 'translateX(-50%) translateY(0)',
-        transition: 'left 0.3s ease-in-out, transform 0.3s ease-in-out',
-      });
-    }
-  }, [activeItem, isAuthenticated]);
 
   const handleUploadClick = () => {
     setIsUploadModalOpen(true);
@@ -73,19 +58,6 @@ const MobileNavBar = () => {
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-[var(--background)] shadow-lg md:hidden z-50">
       <div className="flex justify-around items-center h-16 relative">
-        {/* Animated Hump */}
-        {activeItem && (
-          <div
-            className="absolute -top-6 w-16 h-16 bg-[var(--background)] rounded-full flex items-center justify-center shadow-md transition-all duration-300 ease-in-out z-20"
-            style={humpStyle}
-          >
-            <div className="absolute w-full h-full rounded-full bg-[var(--background)]"></div>
-            <div className="absolute w-6 h-6 bg-[var(--primary)] rounded-full flex items-center justify-center text-base text-white z-30">
-              <FontAwesomeIcon icon={navItems.find(item => item.name === activeItem)?.icon || faHome} />
-            </div>
-          </div>
-        )}
-
         {renderNavItem(navItems[0], 0)} {/* Home */}
         {renderNavItem(navItems[1], 1)} {/* Featured */}
 
